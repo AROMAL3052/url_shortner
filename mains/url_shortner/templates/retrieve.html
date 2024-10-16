@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+    <script src="https://code.jquery.com/ui/1.14.0/jquery-ui.js"></script>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.14.0/themes/base/jquery-ui.css">
+</head>
+<body>
+    {% extends 'nav.html' %}
+
+    {% block content %}
+
+    
+
+    <form action="" method="POST">
+        {% csrf_token %}
+        <input type="search" id="title" name='title' >
+        <button type="submit">search</button>
+    </form>
+
+
+        <div class="center">
+            <h1>Retrieve Products</h1>
+            <table border="1">
+                <tr>
+                    <th>url</th>
+                    <th>short_url</th>
+                    <th>title</th>
+                    <th>time</th>
+                    <th>edit</th>
+                    <th>action</th>
+                </tr>
+
+                    {%for products in page_obj %}
+                    
+                <tr>
+                    <td>{{products.url}}</td>
+                    <td>{{ products.short_url }} </td> 
+                    <td>{{ products.title }}</td>
+                    <td>{{ products.time }}</td>
+                    <td ><a href="{%url 'update' products.id %}" class="btn btn-success" value="edit" type="submit">Edit</a></td>
+                    <td><a href="{%url 'delete' products.id %}" class="btn btn-success" value="edit" type="submit">Delete</a></td>
+                </tr>
+                 {% endfor %}
+                </table> 
+        </div>
+        <nav aria-label="Page navigation example" style="margin:auto;">
+                {% if page_obj.has_previous %}
+                    
+                        <a href="?page=1" class="page-link">&laquo; first</a>
+                        <a href="?page={{ page_obj.previous_page_number }}" class="page-link" aria-label="previous">&laquo; previous</a>
+                {% endif %}
+        
+                {% for page_number in page_obj.paginator.get_elided_page_range %}
+                    {% if page_obj.number == page_number %}
+                            <span class="page-link">{{ page_number }}</span>
+                    {% else %}
+                            <a href="?page={{ page_number }}" class="page-link">{{ page_number }}</a>
+                    {% endif %}
+                {% endfor %}
+        
+                {% if page_obj.has_next %}
+                        <a href="?page={{ page_obj.next_page_number }}" class="page-link">next &raquo;</a>
+                        <a href="?page={{ page_obj.paginator.num_pages }}" class="page-link">last &raquo;</a>
+                {% endif %}
+        </nav>
+
+        <script>
+            $( function() {
+               
+                $( "#title" ).autocomplete({
+                  source: `{% url 'searchs' %}`
+                });
+              } );
+              </script> 
+    {% endblock %}
+
+
+    
+</body>
+</html>

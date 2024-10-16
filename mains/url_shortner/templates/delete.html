@@ -1,0 +1,8 @@
+{% extends 'nav.html' %}
+{% block content %}
+<form method="post" action="">
+    {% csrf_token %}
+    <p>Are you sure you want to delete "{{product.title}}"?</p>
+    <input type="submit" value="Confirm">
+</form>
+{% endblock %}

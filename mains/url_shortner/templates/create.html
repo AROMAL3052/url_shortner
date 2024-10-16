@@ -1,0 +1,12 @@
+{% extends 'nav.html' %}
+{% block content %}
+<h1>Create URL</h1>
+
+{{message}}
+
+<form action='' method='POST'>
+    {% csrf_token %}
+    {{form}}
+    <input type="submit" value="submit">
+</form> 
+{% endblock %}
